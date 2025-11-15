@@ -1,3 +1,4 @@
+
 import { PieceBag, Piece } from "./piece";
 import { Player } from "./player"; // important : à ajouter (même si tu l'importeras plus tard)
 

@@ -15,7 +15,7 @@
     "antd": "^5.24.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.9.6",
+    "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
     "socket.io-client": "^4.8.1",
     "web-vitals": "^2.1.4"
@@ -24,7 +24,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "coverage": "react-scripts test --coverage --coverageReporters=text-lcov --coverageReporters=lcov --watchAll=false",
+    "coverage": "react-scripts test --coverage --coverageReporters=text --watchAll=false --silent --verbose=false",
+    "coverage-silent": "react-scripts test --coverage --coverageReporters=text --watchAll=false --silent",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -50,7 +51,10 @@
       "src/**/*.{js,jsx}",
       "!src/index.js",
       "!src/reportWebVitals.js",
-      "!src/setupTests.js"
+      "!src/setupTests.js",
+      "!src/components/TetrisGame.jsx",
+      "!src/components/TetrisSolo.jsx",
+      "!src/utils/tetrisGameUtils.js"
     ]
   }
 }

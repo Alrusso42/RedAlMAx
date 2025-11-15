@@ -6,8 +6,8 @@ export default function SoloPage() {
   const navigate = useNavigate();
   const { pseudo } = useParams();
 
-  // Si pas de pseudo, rediriger vers l'accueil
-  if (!pseudo) {
+  // Si pas de pseudo ou pseudo vide, rediriger vers l'accueil
+  if (!pseudo || !pseudo.trim()) {
     navigate('/');
     return null;
   }

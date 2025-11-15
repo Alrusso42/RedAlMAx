@@ -16,9 +16,11 @@
     "test": "cross-env NODE_ENV=test jest",
     "test:watch": "cross-env NODE_ENV=test jest --watch",
     "test:cov": "cross-env NODE_ENV=test jest --coverage",
-    "coverage": "cross-env NODE_ENV=test jest --coverage",
+    "coverage": "cross-env NODE_ENV=test jest --coverage --coverageReporters=text --silent",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "coverage-clean": "cross-env NODE_ENV=test jest --coverage --coverageReporters=text --coverageReporters=text-summary",
+    "coverage-silent": "cross-env NODE_ENV=test jest --coverage --coverageReporters=text --silent"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

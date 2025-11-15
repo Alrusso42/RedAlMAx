@@ -9,12 +9,29 @@ export default function HomePage() {
 
   // Liste simple des pseudos et rooms récemment utilisés (en mémoire)
   const getUsedNames = () => {
-    const used = JSON.parse(localStorage.getItem('tetris_used_names') || '{"pseudos": [], "rooms": []}');
-    return used;
+    try {
+      const stored = localStorage.getItem('tetris_used_names');
+      const used = JSON.parse(stored || '{"pseudos": [], "rooms": []}');
+      // Validation des données
+      if (!used.pseudos || !Array.isArray(used.pseudos)) {
+        used.pseudos = [];
+      }
+      if (!used.rooms || !Array.isArray(used.rooms)) {
+        used.rooms = [];
+      }
+      return used;
+    } catch (error) {
+      console.warn('Error parsing stored names:', error);
+      return { pseudos: [], rooms: [] };
+    }
   };
 
   const saveUsedNames = (pseudos, rooms) => {
-    localStorage.setItem('tetris_used_names', JSON.stringify({ pseudos, rooms }));
+    try {
+      localStorage.setItem('tetris_used_names', JSON.stringify({ pseudos, rooms }));
+    } catch (error) {
+      console.warn('Error saving names to localStorage:', error);
+    }
   };
 
   const makeUnique = (name, usedList, suffix = '') => {
@@ -56,6 +73,10 @@ export default function HomePage() {
     }
     const queryString = params.toString();
     const url = `/modes/${encodeURIComponent(finalPseudo)}${queryString ? '?' + queryString : ''}`;
+    
+    // Réinitialiser le formulaire
+    setPseudo('');
+    setRoomId('');
     
     navigate(url);
   };

@@ -11,8 +11,8 @@ export default function GamePage() {
   const searchParams = new URLSearchParams(location.search);
   const userRoomId = searchParams.get('roomId');
 
-  // Si pas de pseudo, rediriger vers l'accueil
-  if (!pseudo) {
+  // Si pas de pseudo ou pseudo vide, rediriger vers l'accueil
+  if (!pseudo || !pseudo.trim()) {
     navigate('/');
     return null;
   }
@@ -24,7 +24,7 @@ export default function GamePage() {
   const handleMultiMode = () => {
     // Utiliser le roomId de l'utilisateur ou en créer un nouveau basé sur timestamp
     const finalRoomId = userRoomId || `room_${Date.now()}`;
-    navigate(`/${encodeURIComponent(finalRoomId)}/${encodeURIComponent(pseudo)}`);
+    navigate(`/${finalRoomId}/${encodeURIComponent(pseudo)}`);
   };
 
   const handleBackToHome = () => {

@@ -107,10 +107,9 @@ describe('Game', () => {
     it('should apply gravity to alive players', () => {
       const originalY = player.currentPiece?.position.y || 0;
       
-      // Simuler plusieurs updates pour déclencher la gravité
-      for (let i = 0; i < player.gravity + 1; i++) {
-        game.update();
-      }
+      // Forcer la chute en manipulant le timer directement
+      player.lastFallTime = Date.now() - player.gravity - 1;
+      game.update();
       
       expect(player.currentPiece?.position.y).toBeGreaterThan(originalY);
     });
