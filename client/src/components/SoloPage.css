@@ -1,0 +1,195 @@
+/* SoloPage.css */
+
+.solo-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 50%, #ff9ff3 100%);
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+}
+
+.solo-container {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 25px;
+  padding: 50px 40px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  animation: zoomIn 0.8s ease-out;
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.solo-title {
+  font-size: 3.5em;
+  margin-bottom: 15px;
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24, #ff3742);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientPulse 2s ease-in-out infinite;
+  font-weight: bold;
+}
+
+@keyframes gradientPulse {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.solo-subtitle {
+  font-size: 1.3em;
+  color: #666;
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+
+.solo-content {
+  margin-bottom: 40px;
+}
+
+.solo-icon {
+  font-size: 5em;
+  margin-bottom: 30px;
+  animation: rotate360 4s linear infinite;
+}
+
+@keyframes rotate360 {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.solo-description {
+  color: #555;
+  font-size: 1.2em;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  padding: 0 20px;
+}
+
+.coming-soon {
+  background: linear-gradient(45deg, #feca57, #ff9ff3);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 50px;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 1.1em;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.solo-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.back-modes-btn,
+.back-home-btn {
+  padding: 15px 30px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 180px;
+}
+
+.back-modes-btn {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+}
+
+.back-modes-btn:hover {
+  background: linear-gradient(45deg, #5a6fd8, #6a4190);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.back-home-btn {
+  background: rgba(108, 117, 125, 0.1);
+  color: #6c757d;
+  border: 2px solid rgba(108, 117, 125, 0.2);
+}
+
+.back-home-btn:hover {
+  background: rgba(108, 117, 125, 0.2);
+  border-color: rgba(108, 117, 125, 0.4);
+  transform: translateY(-3px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .solo-container {
+    padding: 40px 25px;
+    margin: 10px;
+  }
+  
+  .solo-title {
+    font-size: 2.8em;
+  }
+  
+  .solo-subtitle {
+    font-size: 1.2em;
+  }
+  
+  .solo-icon {
+    font-size: 4em;
+  }
+  
+  .solo-description {
+    font-size: 1.1em;
+    padding: 0 10px;
+  }
+  
+  .solo-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .back-modes-btn,
+  .back-home-btn {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .solo-title {
+    font-size: 2.2em;
+  }
+  
+  .solo-container {
+    padding: 30px 20px;
+  }
+  
+  .solo-icon {
+    font-size: 3.5em;
+  }
+  
+  .coming-soon {
+    padding: 12px 25px;
+    font-size: 1em;
+  }
+}

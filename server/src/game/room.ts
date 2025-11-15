@@ -22,7 +22,17 @@ export class Room {
       return null;
     }
 
-    const player = new Player(clientId, playerName);
+    // Vérifier si le pseudo existe déjà et le rendre unique si nécessaire
+    const existingNames = Array.from(this.players.values()).map(p => p.name);
+    let uniqueName = playerName;
+    let counter = 2;
+    
+    while (existingNames.includes(uniqueName)) {
+      uniqueName = `${playerName}_${counter}`;
+      counter++;
+    }
+
+    const player = new Player(clientId, uniqueName);
     this.players.set(clientId, player);
     this.game.addPlayer(player);
 
@@ -64,11 +74,30 @@ export class Room {
       this.game.removePlayer(player.id);
       this.players.delete(clientId);
 
-      // Arrêter la partie si un joueur se déconnecte pendant le jeu
-      if (this.game.status === 'playing') {
+      // Si la partie était en cours et qu'il reste un joueur, remettre en attente
+      if (this.game.status === 'playing' && this.players.size === 1) {
+        this.game.status = 'waiting';
+        this.game.winner = null;
+        
+        // Réinitialiser le joueur restant
+        const remainingPlayer = Array.from(this.players.values())[0];
+        if (remainingPlayer) {
+          remainingPlayer.resetBoard();
+          remainingPlayer.resetScore();
+          remainingPlayer.resetLevel();
+          remainingPlayer.resetGravity();
+          remainingPlayer.alive = true;
+          // Pas besoin de nouvelles pièces car elles seront générées au prochain start
+          remainingPlayer.currentPiece = null;
+          remainingPlayer.nextPiece = null;
+        }
+        
+        console.log(`⏸️ Partie remise en attente dans la room ${this.id} : déconnexion`);
+      }
+      // Si plus de joueurs, terminer la partie
+      else if (this.players.size === 0) {
         this.game.status = 'ended';
         this.game.winner = null;
-        console.log(`⛔ Partie terminée dans la room ${this.id} : déconnexion`);
       }
     }
   }

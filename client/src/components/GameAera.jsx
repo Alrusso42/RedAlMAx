@@ -21,20 +21,26 @@ export default function GameAera({ board, currentPiece, nextPiece, score, level,
                 <h2 className="score">Score : {score}</h2>
                 <h2 className="level">Level : {level}</h2>
 
-                <div className="next-piece-container">
-                    <NextPiece piece={nextPiece} />
-                </div>
-
-                <div className="spectrum-container">
-                    <h3>Adversaire {opponentName && `(${opponentName})`}</h3>
-                    <div className="spectrum-bars">
-                        {opponentSpectrum && opponentSpectrum.length > 0 ? (
-                            <SpectrumBoard spectrum={opponentSpectrum} />
-                        ) : (
-                            <p>En attente...</p>
-                        )}
+                {/* Afficher NextPiece seulement si elle existe (pas en mode invisible) */}
+                {nextPiece && (
+                    <div className="next-piece-container">
+                        <NextPiece piece={nextPiece} />
                     </div>
-                </div>
+                )}
+
+                {/* Afficher la section adversaire seulement en mode multijoueur */}
+                {opponentName !== undefined && (
+                    <div className="spectrum-container">
+                        <h3>Adversaire {opponentName && `(${opponentName})`}</h3>
+                        <div className="spectrum-bars">
+                            {opponentSpectrum && opponentSpectrum.length > 0 ? (
+                                <SpectrumBoard spectrum={opponentSpectrum} />
+                            ) : (
+                                <p>En attente...</p>
+                            )}
+                        </div>
+                    </div>
+                )}
 
             </div>
 

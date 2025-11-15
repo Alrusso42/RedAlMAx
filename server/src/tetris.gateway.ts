@@ -6,25 +6,32 @@ import {
   MessageBody,
   ConnectedSocket,
 } from '@nestjs/websockets';
+import { OnModuleDestroy } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { Room } from './game/room';
 
 
 @WebSocketGateway({ cors: true })
-export class TetrisGateway {
+export class TetrisGateway implements OnModuleDestroy {
   @WebSocketServer()
   server: Server;
 
   private rooms: Map<string, Room> = new Map();
   private clientRooms: Map<string, string> = new Map(); // clientId -> roomId
+  private gameLoopInterval?: NodeJS.Timeout;
 
   constructor() {
     console.log("🚀 TetrisGateway initialisé avec système de rooms !");
   }
 
   afterInit(server: Server) {
+    // Skip game loop in test environment
+    if (process.env.NODE_ENV === 'test') {
+      return;
+    }
+    
     // Boucle du jeu - Met à jour toutes les rooms actives
-    setInterval(() => {
+    this.gameLoopInterval = setInterval(() => {
       this.rooms.forEach((room) => {
         const wasPlaying = room.game.status === 'playing';
         
@@ -91,9 +98,19 @@ export class TetrisGateway {
     this.clientRooms.set(client.id, roomId);
     client.join(roomId); // Socket.io room
 
+    // Informer le client si le pseudo a été modifié
+    if (player.name !== playerName) {
+      console.log(`⚠️ Pseudo modifié: ${playerName} → ${player.name}`);
+      client.emit('nameChanged', { 
+        originalName: playerName, 
+        newName: player.name,
+        message: `Pseudo modifié pour éviter les doublons: "${player.name}"` 
+      });
+    }
+
     // Envoyer les informations au client
     client.emit('playerId', client.id);
-    client.emit('roomJoined', { roomId, playerName });
+    client.emit('roomJoined', { roomId, playerName: player.name });
 
     // Envoyer l'état initial à tous les joueurs de la room
     this.server.to(roomId).emit('update', room.getGameState());
@@ -108,9 +125,19 @@ export class TetrisGateway {
     const room = this.rooms.get(roomId);
     if (!room) return;
 
+    // Si c'était le host qui s'est déconnecté, transférer à l'autre joueur
+    const wasHost = room.hostId === client.id;
+    
     // Retirer le joueur de la room
     room.removePlayer(client.id);
     this.clientRooms.delete(client.id);
+    
+    // Si c'était le host et qu'il reste un joueur, le promouvoir host
+    if (wasHost && room.players.size === 1) {
+      const remainingPlayerId = Array.from(room.players.keys())[0];
+      room.hostId = remainingPlayerId;
+      console.log(`👑 Nouveau host: ${remainingPlayerId} dans la room ${roomId}`);
+    }
 
     // Notifier les autres joueurs
     this.server.to(roomId).emit('update', room.getGameState());
@@ -221,6 +248,14 @@ export class TetrisGateway {
       console.log(`🔄 Partie redémarrée dans la room ${roomId}`);
     } else {
       client.emit('error', { message: 'Impossible de redémarrer la partie' });
+    }
+  }
+
+  // Méthode pour nettoyer les ressources lors de la fermeture
+  onModuleDestroy() {
+    if (this.gameLoopInterval) {
+      clearInterval(this.gameLoopInterval);
+      console.log("🧹 Game loop interval cleared");
     }
   }
 }

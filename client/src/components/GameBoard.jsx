@@ -19,6 +19,9 @@ export default function GameBoard({ board, piece}) {
             } else if (cell === 9) {
               // Ligne de pénalité indestructible - gris foncé avec bordure rouge
               color = "#444";
+            } else if (cell === 8) {
+              // Couleur spéciale pour les flashs en mode invisible
+              color = "orange";
             } else if (cell) {
               color = "gray";
             } else {
