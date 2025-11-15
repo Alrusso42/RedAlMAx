@@ -1,0 +1,16 @@
+.board {
+  display: inline-block;
+  background: black;
+  padding: 2px;
+  border: red  2px solid;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #222;
+}

@@ -1,0 +1,20 @@
+.app-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: red;
+    padding: 20px 40px;
+    border: 3px solid red;
+    border-radius: 10px;
+    z-index: 1000;
+    text-align: center;
+}
